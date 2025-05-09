@@ -1,0 +1,28 @@
+spring:
+  application.name: Whatsapp_clone
+
+  datasource:
+    username : root;
+    url: jdbc:mysql://localhost:3307/whatsapp_clone
+    password : mcmanuel
+
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql:true
+
+    database: MYSQL
+    database-platform: org.hibernate.dailect.MySQLDialect
+
+  flyway:
+    enabled: false
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri:

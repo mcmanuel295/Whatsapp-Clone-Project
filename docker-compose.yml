@@ -1,0 +1,42 @@
+services:
+  mysql:
+    container_name: mcmanuel
+    image: mysql
+
+    environment:
+      MYSQL_ROOT_PASSWORD: mcmanuel
+      MYSQL_DATABASE: whatsapp_clone
+
+    volumes:
+      - mysql:/var/lib/mysql
+
+    ports:
+      - 3306:3306
+
+    networks:
+      - whatsapp-clone
+
+    restart: unless-stopped
+
+  keycloak:
+    container_name: keycloak-wac
+    image: quay.io/keycloak/keycloak:nightly
+    ports:
+      - 9090:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+    networks:
+      - whatsapp-clone
+
+    command:
+      - "start-dev"
+
+volumes:
+  mysql:
+    driver: local
+
+networks:
+  whatsapp-clone:
+    driver: bridge
