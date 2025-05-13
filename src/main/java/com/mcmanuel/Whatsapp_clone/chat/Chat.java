@@ -1,6 +1,6 @@
 package com.mcmanuel.Whatsapp_clone.chat;
 
-import com.mcmanuel.Whatsapp_clone.chat.messages.Messages;
+import com.mcmanuel.Whatsapp_clone.messages.Messages;
 import com.mcmanuel.Whatsapp_clone.entity.BaseAuditingEntity;
 import com.mcmanuel.Whatsapp_clone.user.User;
 import jakarta.persistence.Entity;
