@@ -28,8 +28,16 @@ public class Chat extends BaseAuditingEntity {
     @JoinColumn(name = "sender_id")
     private User sender;
 
-    private User myRecipient;
+    @ManyToOne
+    @JoinColumn(name = "receiver_id")
+    private User recipient;
 
+    @OneToMany(mappedBy = "chat",fetch = FetchType.EAGER)
+    @OrderBy("createdDate DESC")
     private List<Messages> messages;
 
+    @Transient
+    public String getChatName(){
+
+    }
 }

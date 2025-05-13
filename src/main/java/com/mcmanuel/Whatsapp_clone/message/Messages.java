@@ -1,5 +1,6 @@
 package com.mcmanuel.Whatsapp_clone.message;
 
+import com.mcmanuel.Whatsapp_clone.chat.Chat;
 import com.mcmanuel.Whatsapp_clone.entity.BaseAuditingEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,9 +30,14 @@ public class Messages extends BaseAuditingEntity {
     @Enumerated(EnumType.STRING)
     private MessageType messageType;
 
+    @ManyToOne
+    @JoinColumn(name = "chat_id")
+    private Chat chat;
+
     @Column(name = "sender_id",nullable = false)
     private String senderId;
 
     @Column(name = "receiver_id",nullable = false)
     private String receiverId;
+
 }
