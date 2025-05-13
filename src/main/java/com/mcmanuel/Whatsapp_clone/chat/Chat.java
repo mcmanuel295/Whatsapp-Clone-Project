@@ -1,12 +1,9 @@
 package com.mcmanuel.Whatsapp_clone.chat;
 
-import com.mcmanuel.Whatsapp_clone.messages.Messages;
+import com.mcmanuel.Whatsapp_clone.message.Messages;
 import com.mcmanuel.Whatsapp_clone.entity.BaseAuditingEntity;
 import com.mcmanuel.Whatsapp_clone.user.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +24,10 @@ public class Chat extends BaseAuditingEntity {
     @GeneratedValue(strategy = UUID)
     private String id;
 
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
     private User sender;
+
     private User myRecipient;
 
     private List<Messages> messages;
