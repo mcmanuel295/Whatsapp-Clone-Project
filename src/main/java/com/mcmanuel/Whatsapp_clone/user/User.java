@@ -16,6 +16,9 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+@NamedQuery({
+
+})
 public class User {
     private static final int LAST_ACTIVE_INTERVAL = 5;
     @Id
