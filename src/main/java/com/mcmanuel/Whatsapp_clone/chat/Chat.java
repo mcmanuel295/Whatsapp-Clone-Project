@@ -2,7 +2,7 @@ package com.mcmanuel.Whatsapp_clone.chat;
 
 import com.mcmanuel.Whatsapp_clone.message.MessageState;
 import com.mcmanuel.Whatsapp_clone.message.MessageType;
-import com.mcmanuel.Whatsapp_clone.message.Messages;
+import com.mcmanuel.Whatsapp_clone.message.Message;
 import com.mcmanuel.Whatsapp_clone.entity.BaseAuditingEntity;
 import com.mcmanuel.Whatsapp_clone.user.User;
 import jakarta.persistence.*;
@@ -22,6 +22,14 @@ import static jakarta.persistence.GenerationType.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "chats")
+@NamedQuery(
+        name = ChatConstant.FIND_CHAT_BY_SENDER_ID,
+        query = "SELECT DISTINCT c FROM Chat c WHERE c.sender.id = :senderId OR c.recipientId = :senderId ORDER BY C.createdDate DESC"
+)
+@NamedQuery(
+        name = ChatConstant.FIND_CHAT_BY_SENDER_ID_AND_RECEIVER,
+        query = "SELECT DISTINCT c FROM Chat c WHERE (c.sender.id = :senderId AND c.recipientId = :recipientId) OR (c.sender.id = :recipient AND c.recipientId = :senderId) "
+)
 public class Chat extends BaseAuditingEntity {
     @Id
     @GeneratedValue(strategy = UUID)
@@ -37,7 +45,7 @@ public class Chat extends BaseAuditingEntity {
 
     @OneToMany(mappedBy = "chat",fetch = FetchType.EAGER)
     @OrderBy("createdDate DESC")
-    private List<Messages> messages;
+    private List<Message> messages;
 
     @Transient
     public String getChatName(final String senderId ){
