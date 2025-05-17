@@ -30,6 +30,7 @@ import static jakarta.persistence.GenerationType.UUID;
         name = ChatConstant.FIND_CHAT_BY_SENDER_ID_AND_RECEIVER,
         query = "SELECT DISTINCT c FROM Chat c WHERE (c.sender.id = :senderId AND c.recipientId = :recipientId) OR (c.sender.id = :recipient AND c.recipientId = :senderId) "
 )
+
 public class Chat extends BaseAuditingEntity {
     @Id
     @GeneratedValue(strategy = UUID)
@@ -69,6 +70,7 @@ public class Chat extends BaseAuditingEntity {
            if (messages.getFirst().getMessageType()!= MessageType.TEXT){
                return "Attachment";
            }
+           return messages.getFirst().getContent();
        }
        return null;
     }
