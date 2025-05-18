@@ -18,14 +18,16 @@ public class UserSynchronizer {
     public void synchronizeWithIdp(Jwt token) {
         log.info("Synchronizing user with id[");
         getUserEmail(token).ifPresent(userEmail ->{
-            log.info("Synchronizing user having email");
+            log.info("Synchronizing user having email {}",userEmail);
+            Optional<User> optUser = userRepository.findByEmail(userEmail);
+            User user = userMapper.fromTokenAttributes(token.getClaims());
         });
     }
 
     private Optional<String> getUserEmail(Jwt token){
         Map<String,Object> attributes = token.getClaims();
         if (attributes.containsKey("email")){
-            return Optional.of(attributes.get("email").toString());
+            return Optional.ofNullable(attributes.get("email").toString());
         }
         return Optional.empty();
     }
