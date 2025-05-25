@@ -1,5 +1,8 @@
 package com.mcmanuel.Whatsapp_clone.chat;
 
+import com.mcmanuel.Whatsapp_clone.user.User;
+import com.mcmanuel.Whatsapp_clone.user.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -13,10 +16,11 @@ import java.util.Optional;
 public class ChatService {
 
     private final ChatRepository chatRepository;
+    private final UserRepository userRepository;
     private final ChatMapper chatMapper;
 
     @Transactional(readOnly = true)
-    public List<ChatResponse> findAllChatsByReciverId(Authentication currentUser){
+    public List<ChatResponse> findAllChatsByReceiverId(Authentication currentUser){
         final String userId =currentUser.getName();
 
         return chatRepository.findChatsBySenderId(userId)
@@ -31,12 +35,19 @@ public class ChatService {
         if(existingChat.isPresent()){
             return existingChat.get().getId();
         }
+        User sender = userRepository.findByPublicId(senderId).orElseThrow(
+                ()-> new EntityNotFoundException("User with id "+senderId+" not found"));
+
+
+        User receiver = userRepository.findByPublicId(senderId).orElseThrow(
+                ()-> new EntityNotFoundException("User with id "+receiverId+" not found"));
+
+        Chat chat = new Chat();
+        chat.setSender(sender);
+        chat.setRecipient(receiver);
+
+        Chat savedChat = chatRepository.save(chat);
+        return savedChat.getId();
     }
 
-    public Chat createChat(){
-        Chat newChat = new Chat();
-
-        chatRepository.save(newChat);
-        return newChat;
-    }
 }

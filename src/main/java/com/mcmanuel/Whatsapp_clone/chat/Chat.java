@@ -6,10 +6,8 @@ import com.mcmanuel.Whatsapp_clone.message.Message;
 import com.mcmanuel.Whatsapp_clone.entity.BaseAuditingEntity;
 import com.mcmanuel.Whatsapp_clone.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
