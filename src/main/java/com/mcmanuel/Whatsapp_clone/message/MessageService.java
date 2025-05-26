@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -54,11 +55,28 @@ public class MessageService {
 //        todo send notification
     }
 
+
+    public void uploadMedia(String chatId, MultipartFile file,Authentication authentication){
+        Chat chat = chatRepository.findById(chatId).orElseThrow(
+                ()-> new EntityNotFoundException("Chat not found"));
+
+        final String snederId = getSenderId(chat,authentication);
+
+    }
+
+    private String getSenderId(Chat chat, Authentication authentication) {
+
+        if (chat.getSender().getId().equals(authentication.getName())) {
+            return  chat.getSender().getId();
+        }
+        return chat.getRecipient().getId();
+    }
+
+
     private String getRecipientId(Chat chat, Authentication authentication) {
         if (chat.getSender().getId().equals( authentication.getName() )){
             return chat.getRecipient().getId();
         }
         return chat.getSender().getId();
-
     }
 }
