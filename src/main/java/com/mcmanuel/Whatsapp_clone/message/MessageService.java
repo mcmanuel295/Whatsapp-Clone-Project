@@ -4,6 +4,7 @@ import com.mcmanuel.Whatsapp_clone.chat.Chat;
 import com.mcmanuel.Whatsapp_clone.chat.ChatRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,5 +39,21 @@ public class MessageService {
                 .stream()
                 .map(mapper::toMessageResponse)
                 .toList();
+    }
+
+
+    public void setMessagesToSeen(String chatId, Authentication authentication){
+        Chat chat = chatRepository.findById(chatId).orElseThrow(
+                ()-> new EntityNotFoundException("Chat not found"));
+
+        final String recipientId = getRecipientId(chat,authentication);
+    }
+
+    private String getRecipientId(Chat chat, Authentication authentication) {
+        if (chat.getSender().getId().equals(authentication.getName()){
+            return chat.getRecipient().getId();
+        }
+        return chat.getSender().getId();
+
     }
 }
