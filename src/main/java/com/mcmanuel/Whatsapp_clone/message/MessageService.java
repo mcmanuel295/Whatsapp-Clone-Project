@@ -6,6 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,11 +43,15 @@ public class MessageService {
     }
 
 
+    @Transactional
     public void setMessagesToSeen(String chatId, Authentication authentication){
         Chat chat = chatRepository.findById(chatId).orElseThrow(
                 ()-> new EntityNotFoundException("Chat not found"));
 
-        final String recipientId = getRecipientId(chat,authentication);
+//        final String recipientId = getRecipientId(chat,authentication);
+        messageRepository.setMessagesToSeenByChatId(chatId,MessageState.SEEN);
+
+//        todo send notification
     }
 
     private String getRecipientId(Chat chat, Authentication authentication) {
