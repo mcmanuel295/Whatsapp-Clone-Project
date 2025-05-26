@@ -50,7 +50,7 @@ public class MessageService {
     }
 
     private String getRecipientId(Chat chat, Authentication authentication) {
-        if (chat.getSender().getId().equals(authentication.getName()){
+        if (chat.getSender().getId().equals(authentication.getName()  ){
             return chat.getRecipient().getId();
         }
         return chat.getSender().getId();
