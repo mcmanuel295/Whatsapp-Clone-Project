@@ -36,7 +36,7 @@ public class MessageService {
     public List<MessageResponse> findChatMessages(String chatId){
         return messageRepository.findMessagesByChatId(chatId)
                 .stream()
-                .map(mapper::toMessageResponse)
-                .toList()
+                .map(each ->mapper.toMessageResponse(each))
+                .toList();
     }
 }
