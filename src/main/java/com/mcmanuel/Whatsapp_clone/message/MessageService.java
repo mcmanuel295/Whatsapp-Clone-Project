@@ -2,6 +2,7 @@ package com.mcmanuel.Whatsapp_clone.message;
 
 import com.mcmanuel.Whatsapp_clone.chat.Chat;
 import com.mcmanuel.Whatsapp_clone.chat.ChatRepository;
+import com.mcmanuel.Whatsapp_clone.file.FileService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,7 @@ public class MessageService {
     private final MessageRepository messageRepository;
     private final ChatRepository chatRepository;
     private final MessageMapper mapper;
+    private final FileService fileService;
 
     public void saveMessage(MessageRequest messageRequest){
         Chat chat =chatRepository.findById(messageRequest.getChatId()).orElseThrow(
@@ -60,9 +62,26 @@ public class MessageService {
         Chat chat = chatRepository.findById(chatId).orElseThrow(
                 ()-> new EntityNotFoundException("Chat not found"));
 
-        final String snederId = getSenderId(chat,authentication);
+        final String senderId = getSenderId(chat,authentication);
+        final String recipientId = getRecipientId(chat,authentication);
 
+        final String filePath = fileService.saveFile(file,senderId);
+
+        Message message = new Message();
+
+        message.setChat(chat);
+        message.setSenderId(senderId);
+        message.setReceiverId(recipientId);
+        message.setMessageType(MessageType.IMAGE);
+        message.setMessageState(MessageState.SENT);
+        message.setMediaFilePath(filePath);
+
+        messageRepository.save(message);
+
+//        todo notification
     }
+
+
 
     private String getSenderId(Chat chat, Authentication authentication) {
 
