@@ -20,6 +20,6 @@ public class FileService {
     }
 
     private String uploadFile(@NonNull MultipartFile sourceFile, @NonNull String fileUploadSubPath) {
-        final Strinf uploadPath = fileUploadSubPath+File.pathSeparator+fileUploadSubPath;
+        final String uploadPath = fileUploadSubPath+File.pathSeparator+fileUploadSubPath;
     }
 }
